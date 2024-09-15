@@ -1,0 +1,107 @@
+// dasFlex command wrapper for das3_csv.  Das3 CSV is able to take das2 or das3 
+// streams on input and output delimited text values
+{
+	// Make sure the mime types for our inputs and outputs are defined. 
+	// Omitting the input format mime, because das format defs are built-in
+	"mime":{
+		"csv":{
+			"title":"Delimited Text",
+			"extension":"csv",
+			"mime":"text/csv"
+		}
+	},
+
+	// Define how to call the command first.  This section makes references to keyword
+	// substitutions that are provided by the flex interface section below
+
+	"internal":{    // In the internal.json file
+		"commands":{ // In the commands section
+			"das_csv":{
+				"label":"das3_csv",
+				"title":"das 2/3 to delimited UTF-8 stream",
+				"order": 5, // This is a late order command
+				"template":[
+					"das3_csv #[format.headers# #-n] #[format.csv.props#-p#] ",
+					"#[format.csv.dsid# #-i] #[format.secfrac#-s @#] ",
+					"#[format.sigdigit#-r @#] #[format.delim#-d \"@\"#-d ,]"
+				],
+				"activation":[{"key":"format.type","value":"csv"} ],
+				"input":{"type":"das", "version": "3"},
+				"output":{"type":"csv"}
+			}
+		}
+	},
+
+	// Define how to communicate to the command
+
+	"flex":{ // in the flex.json file
+		
+		"protocol":{  // In the protocol section
+			"httpParams":{ // In the params section
+				"format.type": {"required": false,"type": "string"},
+				"format.secfrac": { "required": false, "type": "integer", "range": [0,9]},
+				"format.sigdigit": { "required": false,"type": "integer", "range": [2,17]},
+				"format.delim": {"required": false,"type":"string"},
+				"format.headers": {"required":false,"type":"boolean"},
+				"format.csv.props": {"required":false, "type":"boolean"},
+				"format.csv.dsid": {"required":false, "type":"boolean"},
+			}
+		},
+
+		"interface":{ // In the interface section
+
+			"formats":{
+				// Add the CSV entry to the list of available formats
+				"csv":{
+					"label":"CSV stream", "title":"(Comma) Separated Values for export",
+					"mimeTypes":["text/csv"],
+					"props":{
+						"enabled": {
+							"type": "boolean", "xorGroup": "format", "value": false,
+							"set": {"value": true, "param": "format.type", "pval": "csv"}
+						},
+						"attributes":{
+							"value":false,	"type":"boolean", "label":"Attributes",
+							"title":"Output data object property rows",
+							"set":{"value":true, "param":"format.csv.props", "pval":"1"}
+						},
+						"headers":{
+							"value":true,	"type":"boolean", "label":"Headers",
+							"title":"Output column headers",
+							"set":{"value":false, "param":"format.headers", "pval":"1"}
+						},
+						"datasetIds":{
+							"value":true, "type":"boolean", "label":"Dataset IDs",
+							"title":"Output the dataset ID column", "pval":"1",
+							"set":{"value":false, "param":"format.csv.dsid","pval":"1"}
+						},
+						"delimiter":{
+							"value":"Comma", "type":"enum", "label":"Value Separator",
+							"set":{
+								"param":"format.delim", 
+								"enum":[
+									{"value":"Comma","pval":","},{"value":"Semicolon","pval":";"},
+									{"value":"Pipe","pval":"|"},{"value":"Tab","pval":"tab"}
+								]
+							}
+						},
+						"fracSecs": {
+							"label": "Factional Seconds",
+							"title": "Number of fractional seconds digits",
+							"value": 3, "set": {"param": "format.secfrac"}
+						},
+						"sigDigits": {
+							"label": "Significant Digits",
+							"title": "Significant digits for non-time values",
+							"value": 5, "set": {"param": "format.sigdigit"}
+						}
+					},
+					"order":[
+						"enabled","attributes","headers","datasetIds","delimiter","fracSecs",
+						"sigDigits"
+					]
+				}
+			}
+		}
+	}
+}

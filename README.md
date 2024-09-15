@@ -1,36 +1,37 @@
-# das2-pyserver
+# dasFlex server
 
-[Das2](https://das2.org) servers typically provide data relevant to space
+[Das](https://das2.org) servers typically provide data relevant to space
 plasma and magnetospheric physics research.  To retrieve data, an HTTP GET
-request is posted to a das2 server by a client program and a self-describing
-stream of data values covering the requested time range, at the requested time
-resolution, is provided in the response body.  This software, *das2-pyserver*
-provides a caching middleware layer between server-side das2 readers, which
-stream data at full resolution to standard out, and remote client programs
-such as [Autoplot](https://autoplot.org), [SPEDAS](https://github.com/spedas)
-and [SDDAS](http://www.sddas.org/), or custom programs written in Java
+request is posted to server by a client program.  The server then replies
+with data formatted into the requested MIME-type.  The most flexible
+reply is a *dasStream* version 3, though other output types are supported,
+such as CSV files.
+
+This software, *dasFlex* provides middleware layer between server-side data
+readers, which stream data at full resolution to standard out, and remote client
+programs such as [SDDAS](http://www.sddas.org/), [SPEDAS](https://github.com/spedas),
+and [Autoplot](https://autoplot.org), or custom programs written in Java
 ([das2java](https://github.com/das-developers/das2java)), 
 Python ([das2py](https://github.com/das-developers/das2py)), IDL
 ([das2pro](https://github.com/das-developers/das2pro), 
 [das2dlm](https://github.com/das-developers/das2dlm) ), or C
-([das2C](https://github.com/das-developers/das2C) ).
+([das2C](https://github.com/das-developers/das2C) ).  Since dasFlex is a multi-MIME
+server, data may also be output as delimited text [CSV](https://github.com/das-developers/das2C/wiki/das3_csv) and as [CDF](https://github.com/das-developers/das2C/wiki/das3_cdf) files, 
+which are common in space-physics research.
 
-When a request for data is received, das2-pyserver inspects the HTTP GET URL
-and checks to see if its local cache contains the required data, at the desired
-time resolution or better.  If the request is already cached, an HTTP response
-body is generated from cache blocks.  If not, the associated reader program and
-data reducer listed in the DSDF (Data Source Description File) are invoked on
-the server and the standard output stream from the  `"reader_prog | reducer_prog"`
-pipeline is delivered as the response body.
+When a request for data is received, dasFlex inspects the HTTP GET URL against
+local data source definitions and solves for the commands needed to
+produced the desired output.  The command pipeline is then excuted and output
+is transmitted to the client as an HTTP body, or as part of a WebSocket communication
+session.
 
-Das2-pyserver itself is released under the GPL, but we have intentionally
-separated the core server software from the data readers so that programs
-written in **any** programming language, released under almost **any** license,
-can plug into the system.
+DasFlex itself is released under the GPL, but the core server merely acts 
+as a command runner and output transport agent.  Data producing program may be
+writen in **any** language, and released under almost **any** license.
 
 ## Installation Prequisites
 
-Compilation and installation of das2-pyserver has only been tested in Linux
+Compilation and installation of a dasFlex server has only been tested in Linux
 environments and depends on the following tools:
 
 1. Python >= 3.4
@@ -41,9 +42,9 @@ environments and depends on the following tools:
 5. [das2C](https://github.com/das-developers/das2C), latest version recommended
 6. [das2py](https://github.com/das-developers/das2py), latest version recommended
 
-Since das2C provides small binaries needed by das2-pyserver, and since there
+Since das2C provides small binaries needed by dasFlex, and since there
 are no pre-built das2C packages, installation instructions for both das2C
-and das2-pyserver are included below.  In these instructions the '$' character
+and dasFlex are included below.  In these instructions the '$' character
 is used at the beginning of a line to indicate commands that you'll need to run
 in a bourne compatible shell (bash, ksh, etc.).
 
@@ -70,21 +71,21 @@ All sources are now on github.com
 ```bash
 $ git clone https://github.com/das-developers/das2C.git
 $ git clone https://github.com/das-developers/das2py.git
-$ git clone https://github.com/das-developers/das2-pyserver.git
+$ git clone https://github.com/das-developers/dasFlex.git
 ```
 
 ## Build and Install
 
-Decide where your das2-pyserver code and configuration information will reside. 
-In the example below I've  selected `/var/www/das2srv` but you can choose
+Decide where your dasFlex code and configuration information will reside. 
+In the example below I've  selected `/var/www/dasflex` but you can choose
 any location you like.  These environment variables will be used through out
 the setup, so leaving your terminal window open though the testing stage will
 save time.
 
 ```bash
-$ export PREFIX=/var/www/das2srv     # Adjust to taste
+$ export PREFIX=/var/www/dasflex     # Adjust to taste
 $ export N_ARCH=/                    # since das2 servers are typically machine bound
-$ export PYVER=3.6                   # minimum 3.4
+$ export PYVER=3.9                   # minimum 3.6
 $ export SERVER_ID=solar_orbiter_2   # for example.  ID should not contain whitespace
 ```
 
@@ -126,7 +127,7 @@ edit dasflex.conf after installation.  There is no need to run `build`
 before this step.
 
 ```bash
-$ cd ../das2-pyserver
+$ cd ../dasFlex
 $ python${PYVER} setup.py install --prefix=${PREFIX} --install-lib=${PREFIX}/lib/python${PYVER}
 ```
 You can add the argument `--no-examples` to avoid installing the example
@@ -320,9 +321,9 @@ Take time to customize a few items in your config file such as the
 `${PREFIX}/static/logo.png` or even the style sheet at 
 `${PREFIX}/static/dasflex.css` to something a little nicer.
 
-**Das2-pyserver** is a caching and web-transport layer for das2 readers.  Readers
+**DasFlex** is a caching and web-transport layer for data readers.  Readers
 are the programs that generate the initial full resolution data streams.  The
-entire purpose of das2-pyserver and das2 clients is to leverage the output of
+entire purpose of dasFlex and das2 clients is to leverage the output of
 your reader programs to produce efficient, interactive science data displays.
 Example readers are included in the `$PREFIX/examples` directory to assist you
 with the task of creating readers for your own data.  These examples happen to
@@ -334,17 +335,14 @@ may be used so long as:
   1) all data are written to standard output
   2) all error messages are written to standard error
 
-For further information on your das2-pyserver instance, including:
+For further information on your dasFlex server instance, including:
 
   * reader programs
   * authentication 
   * request caching
-  * automatic [HAPI](https://github.com/hapi-server/data-specification) conversion
   * [federated catalog](https://das2.org/browse) integration
-  * [EPN-TAP](http://www.europlanet-vespa.eu/standards.shtml) integration
   
-consult the users guide document  `das2_pyserver_ug.pdf` included in the docs
-directory of the repository.
+consult the wiki associated with this repository.
 
 ## Examples License
 

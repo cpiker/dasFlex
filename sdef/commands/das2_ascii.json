@@ -1,0 +1,63 @@
+// dasFlex command wrapper for das2_ascii.  This is a minor command
+// that just makes sure all the das2 fields are in text format
+{
+
+	// Skipping the MIME section, das mime types built in
+
+	// Define how to call the command first.
+	"internal":{
+		"commands":{
+			"label": "das 2 binary to text",
+			"order": 5, 
+			"template": "das2_ascii -c #[format.secfrac#-s @#] #[format.sigdigit#-r @#]",
+			"activation": [
+				{"key":"format.type","value":"das"},{"key":"format.version","value": "2"},
+				{"key":"format.serial","value": "text"}
+			],
+			"input": {"type": "das","version": "2"},
+			"output": {"type": "das","version": "2","variant": "text"},
+		}
+	},
+
+	// Define how to communicate with it
+	"flex":{ // In the flex.json file
+		"protocal":{ // In the protocal section add...
+			"httpParams":{
+				
+
+
+			}
+		},
+		"formats": {
+			"das": {
+				"mimeTypes": ["text/vnd.das2.das2stream"],
+				"props": {
+					"version": {
+						"label": "Stream Version", "value": "das3",
+						"type":  "enum", "set" :{
+							"param": "format.version",
+							"enum": [{"value":"das3","pval":"3"},{"value":"das2","pval":"2"}],
+						}
+					},
+					"serial": {
+						"label": "Serialization", "value": "binary", "set": {
+							"param": "format.serial", 
+							"enum": [{"value": "text"},{"value": "binary"}]
+						}
+					},
+					"fracSecs": {
+		            "label": "Factional Seconds",
+	           		"title": "Number of fractional seconds digits in text streams",
+	           		"value": 3, "set": {"param": "format.secfrac"}
+					},
+					"sigDigits": {
+						"label": "Significant Digits",
+						"title": "General significant digits for values in text streams",
+						"value": 5, "set": {"param": "format.sigdigit"}
+					}
+				},
+				"order": [ "enabled", "version", "serial", "sigDigits", "fracSecs"]
+			}
+	},
+	
+}
