@@ -129,6 +129,7 @@ before this step.
 ```bash
 $ cd ../dasFlex
 $ python${PYVER} setup.py install --prefix=${PREFIX} --install-lib=${PREFIX}/lib/python${PYVER}
+$ make install
 ```
 You can add the argument `--no-examples` to avoid installing the example
 data sources if these are not desired.
@@ -136,8 +137,8 @@ data sources if these are not desired.
 Copy over the example configuration file:
 
 ```bash
-$ cd etc
-$ cp dasflex.conf.example ${PREFIX}/dasflex.conf
+$ cd ${PREFIX}/etc
+$ cp dasflex.conf.example dasflex.conf
 ```
 
 We are done with server software installation, lock down the install area (if desired). 
