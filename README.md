@@ -136,8 +136,8 @@ data sources if these are not desired.
 Copy over the example configuration file:
 
 ```bash
-$ cd $PREFIX/etc
-$ cp dasflex.conf.example dasflex.conf
+$ cd etc
+$ cp dasflex.conf.example ${PREFIX}/dasflex.conf
 ```
 
 We are done with server software installation, lock down the install area (if desired). 
