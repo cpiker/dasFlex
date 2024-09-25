@@ -194,8 +194,7 @@ instead of httpd.conf because das2 clients may transmit passwords.
   RewriteEngine on
 
   AllowOverride None
-  Allow from all
-  Order allow,deny
+  Require all granted
 </Directory>
 ```
 
