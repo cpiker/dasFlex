@@ -250,6 +250,7 @@ First make sure mode the following apache modules are enabled:
 ```bash
 a2enmod proxy proxy_wstunnel proxy_http rewrite
 ```
+For RHEL-like systems, check the conf files in `/etc/httpd/conf.modules.d`.
 
 Second in your applicable SSL server add the following.  If you're using 
 the default SSL server on Ubuntu the file is located at `/etc/apache2/sites-enabled/default-ssl.conf`.
