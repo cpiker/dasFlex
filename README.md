@@ -265,7 +265,7 @@ or for RHEL, `/etc/httpd/conf.d/ssl.conf`.
 </Location>
 ```
 Here the value ws://localhost:52242/dasws/ should be whatever you've specifed 
-for the `WEBSOCKE_URI` in your **dasflex.conf** file.
+for the `WEBSOCKET_URI` in your **dasflex.conf** file.
 
 A client program is included for testing your websocket server.  An example of
 running it for the included spectra example would be:
