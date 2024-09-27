@@ -129,6 +129,7 @@ before this step.
 ```bash
 $ cd ../dasFlex
 $ python${PYVER} setup.py install --prefix=${PREFIX} --install-lib=${PREFIX}/lib/python${PYVER}
+$ make install
 ```
 You can add the argument `--no-examples` to avoid installing the example
 data sources if these are not desired.
@@ -136,7 +137,7 @@ data sources if these are not desired.
 Copy over the example configuration file:
 
 ```bash
-$ cd $PREFIX/etc
+$ cd ${PREFIX}/etc
 $ cp dasflex.conf.example dasflex.conf
 ```
 
@@ -193,14 +194,13 @@ instead of httpd.conf because das2 clients may transmit passwords.
   RewriteEngine on
 
   AllowOverride None
-  Allow from all
-  Order allow,deny
+  Require all granted
 </Directory>
 ```
 
 By default, authorization headers are not made available to CGI scripts.
 The re-write rule above allows the `Authorization` header to be passed down
-to the `das2_srv_cgimain` script.  This is needed to allow your server to
+to the `dasflex_cgimain` script.  This is needed to allow your server to
 support password protected data sources.
 
 Now symlink the top level CGI scripts into your new CGI directory.  Choose
@@ -209,8 +209,8 @@ your site:
 
 ```bash
 $ cd /var/www/cgi-das
-$ sudo ln -s $PREFIX/bin/das2_srv_cgimain server
-$ sudo ln -s $PREFIX/bin/das2_srv_cgilog log
+$ sudo ln -s $PREFIX/bin/dasflex_cgimain server
+$ sudo ln -s $PREFIX/bin/dasflex_cgilog log
 ```
 
 The main server script needs to be able to find the main log reader
@@ -250,9 +250,11 @@ First make sure mode the following apache modules are enabled:
 ```bash
 a2enmod proxy proxy_wstunnel proxy_http rewrite
 ```
+For RHEL-like systems, check the conf files in `/etc/httpd/conf.modules.d`.
 
 Second in your applicable SSL server add the following.  If you're using 
-the default SSL server on Ubuntu the file is located at `/etc/apache2/sites-enabled/default-ssl.conf`.
+the default SSL server on Ubuntu the file is located at `/etc/apache2/sites-enabled/default-ssl.conf`
+or for RHEL, `/etc/httpd/conf.d/ssl.conf`.
 ```
 <Location "/dasws/" >
   RewriteEngine on
@@ -263,7 +265,7 @@ the default SSL server on Ubuntu the file is located at `/etc/apache2/sites-enab
 </Location>
 ```
 Here the value ws://localhost:52242/dasws/ should be whatever you've specifed 
-for the `WEBSOCKE_URI` in your **dasflex.conf** file.
+for the `WEBSOCKET_URI` in your **dasflex.conf** file.
 
 A client program is included for testing your websocket server.  An example of
 running it for the included spectra example would be:
