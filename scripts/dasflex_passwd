@@ -22,7 +22,7 @@ except ImportError:
 		import fcrypt as crypt
 	except ImportError:
 		sys.stderr.write("Cannot find a crypt module.  "
-						 "Possibly http://carey.geek.nz/code/python-fcrypt/\n")
+						 "Possibly https://carey.geek.nz/code/python-fcrypt/\n")
 		sys.exit(1)
 
 

@@ -76,7 +76,7 @@ The global catalog tag is:
 ```
 This catalog object may be found at two urls for live fail-over:
 ```
-   http://das2.org/catalog/das.json
+   https://das2.org/catalog/das.json
    https://raw.githubusercontent.com/das-developers/das-cat/master/cat/das.json
 ```
 

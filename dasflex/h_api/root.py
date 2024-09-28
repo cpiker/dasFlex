@@ -62,9 +62,9 @@ to HTTP GET requests.
 </ol>
 <p>Many datasets available from this server may not fit into the output 
 format required by the API.  For these, use of the native Das2 stream format
-is recommended.  For more information on the Helophysics API, it's capabilities
-and restrictions, see <a href="http://spase-group.org/hapi">this page</a> at
-the SPASE web site.  </p>
+is recommended.  For more information on the <a href="https://spase-group.org/hapi">
+Helophysics API</a>, it's capabilities and restrictions, see
+<a href="https://spase-group.org/hapi">the SPASE web site</a>.  </p>
 
 </body>
 </html>
