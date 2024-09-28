@@ -137,7 +137,7 @@ as VOTables (in work) via the navigation bar to the right.  Full use of this
 server requires a client program capable of reading data in one of the provided
 formats and producing plots.  Programs which can parse <i>das2</i> streams include:</p>
 <ul>
-<li> <a href="http://das2.org/autoplot">Autoplot</a> via the
+<li> <a href="https://das2.org/autoplot">Autoplot</a> via the
 <a href="https://github.com/das-developers/das2java">das2java</a> library.  
 This is the most common client.</li>
 <li> <a href="https://spedas.org/blog/">SPEDAS (Space Physics Environment Data Analysis Software)</a>

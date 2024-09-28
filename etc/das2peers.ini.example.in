@@ -1,5 +1,5 @@
 [planet]
-url = http://planet.physics.uiowa.edu/das/das2Server
+url = https://planet.physics.uiowa.edu/das/das2Server
 description = Primary Das2 server at Iowa.  Provides access to plasma wave data from
   Cassini, Galileo, Juno, Mars Express, and Voyager.
  Operated by the Department of Physics and Astronmy at University of Iowa
@@ -14,7 +14,3 @@ url = https://zeus.physics.uiowa.edu/das/server
 description = Provides Jupiter radio astronomy data from the Long Wave Array
   Operated by the Department of Physics and Astronmy at University of Iowa
 
-[emfisis]
-url = https://emfisis.physics.uiowa.edu/das/server
-description = Serves EMFISIS data from the Van Allen Probes mission.  
-  Operated by the Department of Physics and Astronmy at University of Iowa

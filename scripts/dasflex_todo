@@ -454,7 +454,7 @@ SYNOPSIS:
 DESCRIPTION:
    das2_srv_todo adds tasks of type TASK to the the redis server hosting a Das2
    PyServer work queue.  The default implementation of the server uses a ReDis
-   server (http://redis.io/) to host the queue.  Using Redis allows multiple
+   server (https://redis.io/) to host the queue.  Using Redis allows multiple
    processes may insert tasks at the same time without corrupting the task 
    queue.  Tasks within the queue are represented as simple strings with pipe,
    '|', delimited fields.  This program appends new strings to the 'das2_todo'
@@ -525,7 +525,7 @@ FILES:
 		
 SEE ALSO:
    das2_srv_workd, das2_cache_rdr, and the 'Das2 PyServer Reference Guide at:
-      http://das2.org/PyServer-RG.pdf
+      https://das2.org/PyServer-RG.pdf
 """%g_sConfPath)
 	
 		#End print_help

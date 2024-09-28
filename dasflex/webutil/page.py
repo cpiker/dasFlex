@@ -49,7 +49,7 @@ def header(dConf, fLog, sTitle=None):
 	<h1>%(SITE_TITLE)s</h1>
 	</div>
 	<div class="hdr_right">
-		<a href="http://das2.org">
+		<a href="https://das2.org">
 		<img src="%(script)s/static/das2logo_rv.png" alt="das2" width="80" height="80">
 		</a>
 	</div>
@@ -271,7 +271,7 @@ catalog.</i><br><br>"""
 	# If no top header, then add das2-logo below with info link
 	if bAddExtra:
 		pout('''<hr>
-<a href="http://das2.org">
+<a href="https://das2.org">
 <img src="%s/static/dasflex_rv.png" alt="das2" width="65" height="65">
 </a>'''%sScriptUrl)
 
@@ -329,6 +329,6 @@ def footer(dConf, fLog):
 	
 	pout('''<div class="footer">
   <div>More information about das2 can be found at:
-  <a href="http://das2.org/">http://das2.org/</a>.</div>
+  <a href="https://das2.org/">https://das2.org/</a>.</div>
   <div>%s</div>
 </div>'''%os.getenv('SERVER_SIGNATURE'))

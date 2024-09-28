@@ -232,7 +232,7 @@ def main():
 	<h1>%(site-id)s</h1>
 	</div>
 	<div class="hdr_right">
-		<a href="http://das2.org">
+		<a href="https://das2.org">
 		<img src="%(main-script)s/static/das2logo_rv.png" alt="Das2" width="80" height="80">
 		</a>
 	</div>
@@ -274,7 +274,7 @@ def main():
 		<a href="%(contact-url)s"> %(contact-email)s </a> 
 	</address>
   <div>More information about das2 can be found at:
-  <a href="http://das2.org/">http://das2.org/</a>.</div>
+  <a href="https://das2.org/">https://das2.org/</a>.</div>
   <div>%(server-sig)s</div>
 </div>"""%dReplace)
 
